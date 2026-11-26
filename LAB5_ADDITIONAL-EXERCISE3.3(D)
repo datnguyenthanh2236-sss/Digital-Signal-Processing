@@ -1,0 +1,60 @@
+clc; clear; close;
+
+// Khởi tạo cửa sổ nền trắng
+f = scf(0);
+f.background = color("white");
+
+a = gca();
+a.isoview = "on";
+a.axes_visible = ["off", "off", "off"];
+a.data_bounds = [-3.8, -3.8; 4.1, 4.0];
+
+r_in = 1/2;
+r_out = 3;
+theta = linspace(0, 2*%pi, 300);
+
+x_out = r_out * cos(theta);
+y_out = r_out * sin(theta);
+x_in  = r_in  * cos(theta);
+y_in  = r_in  * sin(theta);
+
+// 1. Tô hình tròn ngoài bán kính 3 màu xanh nhạt
+c_blue_light = addcolor([0.84, 0.84, 1.0]);
+xfpoly(x_out, y_out, c_blue_light);
+e1 = gce();
+e1.line_mode = "off";
+
+// 2. Tô hình tròn trong bán kính 1/2 màu trắng tạo miền vành khuyên
+xfpoly(x_in, y_in, color("white"));
+e2 = gce();
+e2.line_mode = "off";
+
+// 3. Vẽ 2 đường tròn biên nét đứt màu xanh dương
+plot(x_out, y_out, "b--");
+e3 = gce();
+e3.children.thickness = 2;
+
+plot(x_in, y_in, "b--");
+e4 = gce();
+e4.children.thickness = 2;
+
+// 4. Vẽ trục thực Re(z) và trục ảo Im(z) có mũi tên
+xarrows([-3.6, 3.6], [0, 0], 1.0, color("black"));
+xarrows([0, 0], [-3.6, 3.6], 1.0, color("black"));
+
+// 5. Đánh dấu 2 điểm cực màu đỏ tại z = 1/2 và z = 3
+plot([1/2, 3], [0, 0], "rx");
+e_p = gce();
+e_p.children.mark_size = 8;
+e_p.children.thickness = 2;
+
+// 6. Ghi nhãn
+xstring(3.65, -0.2, "Re(z)");
+xstring(-0.45, 3.65, "Im(z)");
+
+xstring(-1.85, 1.45, "ROC : 1/2 < |z| < 3");
+gce().font_foreground = color("blue");
+gce().font_size = 3;
+
+xstring(0.58, -0.55, "1/2");
+xstring(3.1, -0.48, "3");
