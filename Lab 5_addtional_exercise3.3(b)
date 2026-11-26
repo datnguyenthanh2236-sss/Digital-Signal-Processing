@@ -1,0 +1,59 @@
+clc; clear; close;
+
+f = scf(0);
+f.background = color("white");
+
+a = gca();
+a.isoview = "on";
+a.axes_visible = ["off", "off", "off"];
+a.data_bounds = [-2.9, -2.9; 3.1, 3.0];
+
+r_in = 1/3;
+r_out = 2;
+theta = linspace(0, 2*%pi, 300);
+
+x_out = r_out * cos(theta);
+y_out = r_out * sin(theta);
+x_in  = r_in  * cos(theta);
+y_in  = r_in  * sin(theta);
+
+c_blue_light = addcolor([0.84, 0.84, 1.0]);
+xb = [-2.4, 2.4, 2.4, -2.4];
+yb = [-2.4, -2.4, 2.4, 2.4];
+xfpoly(xb, yb, c_blue_light);
+e_bg = gce();
+e_bg.line_mode = "off";
+
+xfpoly(x_out, y_out, color("white"));
+e_hole = gce();
+e_hole.line_mode = "off";
+
+
+plot(x_out, y_out, "b--");
+e_c2 = gce();
+e_c2.children.thickness = 2;
+
+plot(x_in, y_in, ":");
+e_c1 = gce();
+e_c1.children.foreground = addcolor([0.75, 0.75, 0.75]);
+e_c1.children.thickness = 1.5;
+
+xarrows([-2.7, 2.7], [0, 0], 1.0, color("black"));
+xarrows([0, 0], [-2.7, 2.7], 1.0, color("black"));
+
+//red pole
+plot([1/3, 2], [0, 0], "rx");
+e_p = gce();
+e_p.children.mark_size = 8;
+e_p.children.thickness = 2;
+
+//label
+xstring(2.75, -0.15, "Re(z)");
+xstring(-0.35, 2.75, "Im(z)");
+
+t_roc = xstring(-0.85, 2.08, "ROC : |z| > 2");
+gce().font_foreground = color("blue");
+gce().font_size = 3;
+
+xstring(0.4, -0.42, "1/3");
+xstring(2.08, -0.35, "2");
